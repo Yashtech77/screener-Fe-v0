@@ -137,7 +137,7 @@ const CallLogs = () => {
       const response = await fetch("https://api.vapi.ai/call", {
         method: "GET",
         headers: {
-          Authorization: "Bearer 3efd46ea-a136-4079-b4f3-426658e28c20",
+          Authorization: "Bearer dff28b71-e48e-4bd1-a0c8-b2ce56a3bb39",
         },
       });
       if (!response.ok) throw new Error("Failed to fetch call logs");
