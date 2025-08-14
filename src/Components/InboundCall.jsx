@@ -112,7 +112,7 @@ const InboundCall = () => {
   const [assistantId, setAssistantId] = useState(null);
   const vapiInstanceRef = useRef(null);
 
-  const apiKey = '1ea32518-1275-40ba-bf85-87dc115b4944';
+  const apiKey = '26b8392c-3306-4dc1-bc88-dde22be6800c';
 
   // Fetch assistant ID from backend
   useEffect(() => {
