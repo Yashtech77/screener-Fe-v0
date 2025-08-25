@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import OutboundCallForm from './Components/OutboundCallForm';
 import CallLogs from './Components/CallLogs';
-import Chatbot from './Components/Chatbot';
+ 
 import Home from './Components/Home';
 import Nav from './Components/Nav';
 import CallDetails from './Components/CallDetails';
@@ -31,7 +31,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/outbound-call" element={<OutboundCallForm />} />
           <Route path="/call-logs" element={<CallLogs />} />
-          <Route path="/chatbot" element={<Chatbot />} />
+          
           <Route path="/inbound-call" element={<InboundCall />} />
           <Route path="/call-details/:callId" element={<CallDetails />} />
           <Route path="/knowledge-base-upload" element={<KnowledgeBaseUpload />} />

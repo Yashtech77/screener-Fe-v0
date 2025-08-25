@@ -1,17 +1,8 @@
-// import React from 'react'
-
-// const ManageAssist = () => {
-//   return (
-//     <div>ManageAssist</div>
-//   )
-// }
-
-// export default ManageAssist
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import BackButton from "../section/Backbutton";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -62,6 +53,7 @@ const AssistantManager = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
+         <BackButton />
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-xl p-6">
         <h1 className="text-2xl font-bold text-purple-700 mb-4">Manage Assistants</h1>
 
