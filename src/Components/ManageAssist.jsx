@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BackButton from "../section/Backbutton";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const ITEMS_PER_PAGE = 5;
 
 const AssistantManager = () => {
@@ -16,7 +17,7 @@ const AssistantManager = () => {
   const fetchAssistants = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/list-assistants');
+      const response = await axios.get(`${API_BASE}/list-assistants`);
       setAssistants(response.data);
       setError('');
     } catch (err) {
@@ -36,7 +37,7 @@ const AssistantManager = () => {
     if (!window.confirm('Are you sure you want to delete this assistant?')) return;
 
     try {
-      await axios.delete(`http://localhost:5000/delete-assistant/${id}`);
+      await axios.delete(`${API_BASE}/delete-assistant/${id}`);
       toast.success('Assistant deleted');
       fetchAssistants(); // Refresh list
     } catch (err) {
