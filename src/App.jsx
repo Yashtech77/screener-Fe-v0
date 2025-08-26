@@ -2,8 +2,7 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import OutboundCallForm from './Components/OutboundCallForm';
-import CallLogs from './Components/CallLogs';
- 
+import CallLogs from './Components/CallLogs'; 
 import Home from './Components/Home';
 import Nav from './Components/Nav';
 import CallDetails from './Components/CallDetails';

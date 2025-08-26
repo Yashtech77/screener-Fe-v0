@@ -138,13 +138,13 @@ const InboundCall = () => {
   // 🔑 Load from .env
   const apiKey = import.meta.env.VITE_VAPI_PUB_API_KEY; // public key
   const defaultAssistantId = import.meta.env.VITE_ASSISTANT_ID; // fallback if backend not available
-  const BASE_URL = import.meta.env.VITE_VAPI_BASE_URL;
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch assistant ID from backend (if you have one running)
   useEffect(() => {
     const fetchAssistantId = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/list-assistants");
+        const response = await axios.get(`${API_BASE}/list-assistants`);
         const assistants = response.data;
 
         if (Array.isArray(assistants) && assistants.length > 0) {
