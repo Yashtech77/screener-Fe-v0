@@ -1,12 +1,16 @@
 // import React, { useState, useEffect } from "react";
-// import { useParams } from "react-router-dom"; 
-// import BackButton from '../section/Backbutton';  // For getting the callId from URL params
+// import { useParams } from "react-router-dom";
+// import BackButton from "../section/Backbutton";
 
 // const CallDetails = () => {
-//   const { callId } = useParams(); // Get the callId from the URL
+//   const { callId } = useParams();
 //   const [callDetails, setCallDetails] = useState(null);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
+
+//   // Read from .env
+//   const BASE_URL = import.meta.env.VITE_VAPI_BASE_URL;
+//   const API_KEY = import.meta.env.VITE_VAPI_API_KEY;
 
 //   // Fetch details of a specific call by ID
 //   const fetchCallDetails = async () => {
@@ -14,10 +18,10 @@
 //     setError(null);
 
 //     try {
-//       const response = await fetch(`https://api.vapi.ai/call/${callId}`, {
+//       const response = await fetch(`${BASE_URL}/call/${callId}`, {
 //         method: "GET",
 //         headers: {
-//           Authorization: "Bearer 59525b2e-ac3a-43f6-8158-457f103a36f2",
+//           Authorization: `Bearer ${API_KEY}`,
 //         },
 //       });
 
@@ -26,7 +30,7 @@
 //       }
 
 //       const data = await response.json();
-//       setCallDetails(data); // Set the fetched call details
+//       setCallDetails(data);
 //     } catch (err) {
 //       setError(err.message);
 //     } finally {
@@ -50,7 +54,12 @@
 //       if (parts.length === 2) {
 //         const [role, message] = parts;
 //         return (
-//           <div key={index} className={`mb-2 ${role === "AI" ? "text-blue-500" : "text-green-500"}`}>
+//           <div
+//             key={index}
+//             className={`mb-2 ${
+//               role === "AI" ? "text-blue-500" : "text-green-500"
+//             }`}
+//           >
 //             <strong>{role}:</strong> {message}
 //           </div>
 //         );
@@ -64,26 +73,31 @@
 //       <BackButton />
 //       <h2 className="text-3xl font-semibold mb-4">Call Details</h2>
 
-//       {/* Display any errors */}
 //       {error && <p className="text-red-600">{error}</p>}
 
-//       {/* Display Loading */}
 //       {loading ? (
 //         <p>Loading...</p>
 //       ) : callDetails ? (
 //         <div className="bg-white shadow rounded-lg p-6">
-//           <h3 className="text-xl font-medium text-gray-700 mb-4">Call Type: {callDetails.type}</h3>
+//           <h3 className="text-xl font-medium text-gray-700 mb-4">
+//             Call Type: {callDetails.type}
+//           </h3>
 
 //           <div className="mb-4">
 //             <h4 className="font-semibold text-gray-700">Transcript:</h4>
-//             <div className="text-gray-600">{formatTranscript(callDetails.transcript)}</div>
+//             <div className="text-gray-600">
+//               {formatTranscript(callDetails.transcript)}
+//             </div>
 //           </div>
 
-//           {callDetails.artifact && callDetails.artifact.recordingUrl && (
+//           {callDetails.artifact?.recordingUrl && (
 //             <div className="mt-4">
 //               <h4 className="text-lg font-semibold">Recording:</h4>
 //               <audio controls className="mt-2 w-full">
-//                 <source src={callDetails.artifact.recordingUrl} type="audio/mpeg" />
+//                 <source
+//                   src={callDetails.artifact.recordingUrl}
+//                   type="audio/mpeg"
+//                 />
 //                 Your browser does not support the audio element.
 //               </audio>
 //             </div>
@@ -96,13 +110,15 @@
 //         </div>
 //       ) : (
 //         !loading && <p>No call details available</p>
-//       )} 
+//       )}
 //     </div>
 //   );
 // };
 
 // export default CallDetails;
- 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import BackButton from "../section/Backbutton";
@@ -147,31 +163,57 @@ const CallDetails = () => {
     fetchCallDetails();
   }, [callId]);
 
-  const formatDate = (date) => new Date(date).toLocaleString();
+  const formatDate = (date) =>
+    date ? new Date(date).toLocaleString() : "N/A";
 
   const formatTranscript = (transcript) => {
-    if (!transcript || typeof transcript !== "string") {
+    if (!transcript) {
       return <p className="text-gray-500">No transcript available</p>;
     }
 
-    return transcript.split("\n").map((line, index) => {
-      const parts = line.split(":");
-      if (parts.length === 2) {
-        const [role, message] = parts;
-        return (
-          <div
-            key={index}
-            className={`mb-2 ${
-              role === "AI" ? "text-blue-500" : "text-green-500"
-            }`}
-          >
-            <strong>{role}:</strong> {message}
-          </div>
-        );
-      }
-      return null;
-    });
+    // Case 1: Transcript is a string with newlines
+    if (typeof transcript === "string") {
+      return transcript.split("\n").map((line, index) => {
+        const parts = line.split(":");
+        if (parts.length === 2) {
+          const [role, message] = parts;
+          return (
+            <div
+              key={index}
+              className={`mb-2 ${
+                role.trim() === "AI" ? "text-blue-500" : "text-green-600"
+              }`}
+            >
+              <strong>{role.trim()}:</strong> {message.trim()}
+            </div>
+          );
+        }
+        return null;
+      });
+    }
+
+    // Case 2: Transcript is an array of messages
+    if (Array.isArray(transcript)) {
+      return transcript.map((msg, index) => (
+        <div
+          key={index}
+          className={`mb-2 ${
+            msg.role === "assistant" ? "text-blue-500" : "text-green-600"
+          }`}
+        >
+          <strong>{msg.role}:</strong> {msg.content}
+        </div>
+      ));
+    }
+
+    return <p className="text-gray-500">Transcript format not recognized</p>;
   };
+
+  // Fallback recording URL
+  const recordingUrl =
+    callDetails?.artifact?.recordingUrl ||
+    callDetails?.artifacts?.[0]?.recordingUrl ||
+    null;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -185,7 +227,7 @@ const CallDetails = () => {
       ) : callDetails ? (
         <div className="bg-white shadow rounded-lg p-6">
           <h3 className="text-xl font-medium text-gray-700 mb-4">
-            Call Type: {callDetails.type}
+            Call Type: {callDetails?.type || "N/A"}
           </h3>
 
           <div className="mb-4">
@@ -195,14 +237,11 @@ const CallDetails = () => {
             </div>
           </div>
 
-          {callDetails.artifact?.recordingUrl && (
+          {recordingUrl && (
             <div className="mt-4">
               <h4 className="text-lg font-semibold">Recording:</h4>
               <audio controls className="mt-2 w-full">
-                <source
-                  src={callDetails.artifact.recordingUrl}
-                  type="audio/mpeg"
-                />
+                <source src={recordingUrl} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>
             </div>
@@ -210,7 +249,9 @@ const CallDetails = () => {
 
           <div className="mt-4">
             <h4 className="font-semibold text-gray-700">Created At:</h4>
-            <p className="text-gray-600">{formatDate(callDetails.createdAt)}</p>
+            <p className="text-gray-600">
+              {formatDate(callDetails?.createdAt || callDetails?.startedAt)}
+            </p>
           </div>
         </div>
       ) : (

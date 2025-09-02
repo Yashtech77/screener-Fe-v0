@@ -1,3 +1,4 @@
+ 
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
 // import BackButton from "../section/Backbutton";
@@ -30,8 +31,27 @@
 //       if (!response.ok) throw new Error("Failed to fetch call logs");
 
 //       const data = await response.json();
-//       setCallLogs(data);
-//       setFilteredLogs(data);
+
+//       // 🔹 Fetch details for each call to get createdAt
+//       const withDetails = await Promise.all(
+//         data.map(async (log) => {
+//           try {
+//             const res = await fetch(`${BASE_URL}/call/${log.id}`, {
+//               headers: { Authorization: `Bearer ${API_KEY}` },
+//             });
+//             if (res.ok) {
+//               const detail = await res.json();
+//               return { ...log, createdAt: detail.createdAt };
+//             }
+//             return log;
+//           } catch {
+//             return log;
+//           }
+//         })
+//       );
+
+//       setCallLogs(withDetails);
+//       setFilteredLogs(withDetails);
 //     } catch (err) {
 //       setError(err.message);
 //     } finally {
@@ -50,7 +70,6 @@
 //   const applyFilters = () => {
 //     let logs = [...callLogs];
 
-//     // Filter by search term
 //     if (searchTerm.trim() !== "") {
 //       logs = logs.filter(
 //         (log) =>
@@ -59,10 +78,9 @@
 //       );
 //     }
 
-//     // Filter by date
 //     const today = new Date();
 //     logs = logs.filter((log) => {
-//       const date = new Date(log.startedAt);
+//       const date = new Date(log.createdAt || log.startedAt);
 //       if (filter === "today") {
 //         return date.toDateString() === today.toDateString();
 //       } else if (filter === "yesterday") {
@@ -76,14 +94,14 @@
 //       } else if (filter === "month") {
 //         return date.getMonth() === today.getMonth();
 //       }
-//       return true; // "all"
+//       return true;
 //     });
 
 //     setFilteredLogs(logs);
 //     setCurrentPage(1);
 //   };
 
-//   const formatDate = (date) => new Date(date).toLocaleString();
+//   const formatDate = (date) => (date ? new Date(date).toLocaleString() : "N/A");
 
 //   const badgeClass = (status) => {
 //     if (status === "true") return "bg-green-200 text-green-700";
@@ -91,13 +109,9 @@
 //     return "bg-gray-200 text-gray-700";
 //   };
 
-//   // Pagination
 //   const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
 //   const startIndex = (currentPage - 1) * logsPerPage;
-//   const currentLogs = filteredLogs.slice(
-//     startIndex,
-//     startIndex + logsPerPage
-//   );
+//   const currentLogs = filteredLogs.slice(startIndex, startIndex + logsPerPage);
 
 //   const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 //   const handleNext = () =>
@@ -110,7 +124,6 @@
 
 //       {error && <p className="text-red-600">{error}</p>}
 
-//       {/* Search and Filters */}
 //       <div className="mb-4 flex flex-wrap gap-4 items-center">
 //         <input
 //           type="text"
@@ -143,10 +156,9 @@
 //                 <tr>
 //                   <th className="px-4 py-2 text-left">Call ID</th>
 //                   <th className="px-4 py-2">Type</th>
-//                   <th className="px-4 py-2">Started At</th>
+//                   <th className="px-4 py-2">Created At</th>
 //                   <th className="px-4 py-2">Ended At</th>
-//                   <th className="px-4 py-2">Status</th>
-//                   <th className="px-4 py-2">Success</th>
+//                   {/* <th className="px-4 py-2">Success</th> */}
 //                   <th className="px-4 py-2">Actions</th>
 //                 </tr>
 //               </thead>
@@ -156,31 +168,33 @@
 //                     <td className="px-4 py-2 text-sm">{log.id}</td>
 //                     <td className="px-4 py-2 text-sm">{log.type}</td>
 //                     <td className="px-4 py-2 text-sm">
-//                       {formatDate(log.startedAt)}
+//                       {formatDate(log.createdAt)}
 //                     </td>
 //                     <td className="px-4 py-2 text-sm">
-//                       {formatDate(log.endedAt)}
+//                       {log.endedAt ? (
+//                         formatDate(log.endedAt)
+//                       ) : (
+//                         <span className="px-2 py-1 border border-yellow-400 text-yellow-600 rounded">
+//                           Customer didn’t pick the call
+//                         </span>
+//                       )}
 //                     </td>
-//                     <td className="px-4 py-2 text-sm capitalize">
-//                       <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">
-//                         {log.endedReason
-//                           ? log.endedReason.replace(/-/g, " ")
-//                           : "N/A"}
-//                       </span>
-//                     </td>
-//                     <td className="px-4 py-2 text-sm">
+
+//                     {/* <td className="px-4 py-2 text-sm">
 //                       <span
 //                         className={`px-2 py-1 rounded ${badgeClass(
 //                           log.analysis?.successEvaluation
 //                         )}`}
 //                       >
-//                         {log.analysis?.successEvaluation === "true"
-//                           ? "Pass"
-//                           : log.analysis?.successEvaluation === "false"
-//                           ? "Fail"
-//                           : "N/A"}
+//                         {log.analysis?.successEvaluation === "true" ? (
+//                           "Agreed for Donation "
+//                         ) : log.analysis?.successEvaluation === "false" ? (
+//                           "Not Agreed for Donation"
+//                         ) : (
+//                           <span className="px-2 py-1 ">Not Applicable</span>
+//                         )}
 //                       </span>
-//                     </td>
+//                     </td> */}
 //                     <td className="px-4 py-2 text-sm space-x-2">
 //                       <Link
 //                         to={`/call-details/${log.id}`}
@@ -188,7 +202,7 @@
 //                       >
 //                         View Details
 //                       </Link>
-//                       {log.recordingUrl ? (
+//                       {/* {log.recordingUrl ? (
 //                         <a
 //                           href={log.recordingUrl}
 //                           target="_blank"
@@ -199,7 +213,7 @@
 //                         </a>
 //                       ) : (
 //                         <span className="text-gray-500">No Recording</span>
-//                       )}
+//                       )} */}
 //                     </td>
 //                   </tr>
 //                 ))}
@@ -207,7 +221,6 @@
 //             </table>
 //           </div>
 
-//           {/* Pagination Controls */}
 //           <div className="mt-4 flex justify-between items-center">
 //             <button
 //               onClick={handlePrev}
@@ -234,6 +247,12 @@
 // };
 
 // export default CallLogs;
+
+
+
+// ---------------------------------------------------------------telebot-frontend---------------------------------------------------------
+
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BackButton from "../section/Backbutton";
@@ -276,11 +295,11 @@ const CallLogs = () => {
             });
             if (res.ok) {
               const detail = await res.json();
-              return { ...log, createdAt: detail.createdAt };
+              return { ...log, createdAt: detail.createdAt || log.startedAt };
             }
-            return log;
+            return { ...log, createdAt: log.startedAt };
           } catch {
-            return log;
+            return { ...log, createdAt: log.startedAt };
           }
         })
       );
@@ -308,8 +327,8 @@ const CallLogs = () => {
     if (searchTerm.trim() !== "") {
       logs = logs.filter(
         (log) =>
-          log.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          log.type.toLowerCase().includes(searchTerm.toLowerCase())
+          log.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          log.type?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -327,7 +346,10 @@ const CallLogs = () => {
         weekAgo.setDate(today.getDate() - 7);
         return date >= weekAgo;
       } else if (filter === "month") {
-        return date.getMonth() === today.getMonth();
+        return (
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
+        );
       }
       return true;
     });
@@ -336,17 +358,19 @@ const CallLogs = () => {
     setCurrentPage(1);
   };
 
-  const formatDate = (date) => (date ? new Date(date).toLocaleString() : "N/A");
+  const formatDate = (date) =>
+    date ? new Date(date).toLocaleString() : "N/A";
 
-  const badgeClass = (status) => {
-    if (status === "true") return "bg-green-200 text-green-700";
-    if (status === "false") return "bg-red-200 text-red-700";
-    return "bg-gray-200 text-gray-700";
-  };
+  const totalPages =
+    filteredLogs.length > 0
+      ? Math.ceil(filteredLogs.length / logsPerPage)
+      : 1;
 
-  const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
   const startIndex = (currentPage - 1) * logsPerPage;
-  const currentLogs = filteredLogs.slice(startIndex, startIndex + logsPerPage);
+  const currentLogs = filteredLogs.slice(
+    startIndex,
+    startIndex + logsPerPage
+  );
 
   const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const handleNext = () =>
@@ -383,6 +407,8 @@ const CallLogs = () => {
 
       {loading ? (
         <p>Loading...</p>
+      ) : filteredLogs.length === 0 ? (
+        <p className="text-gray-600">No call logs found.</p>
       ) : (
         <>
           <div className="overflow-x-auto bg-white shadow rounded-lg">
@@ -393,7 +419,6 @@ const CallLogs = () => {
                   <th className="px-4 py-2">Type</th>
                   <th className="px-4 py-2">Created At</th>
                   <th className="px-4 py-2">Ended At</th>
-                  {/* <th className="px-4 py-2">Success</th> */}
                   <th className="px-4 py-2">Actions</th>
                 </tr>
               </thead>
@@ -401,7 +426,7 @@ const CallLogs = () => {
                 {currentLogs.map((log) => (
                   <tr key={log.id} className="border-b hover:bg-gray-50">
                     <td className="px-4 py-2 text-sm">{log.id}</td>
-                    <td className="px-4 py-2 text-sm">{log.type}</td>
+                    <td className="px-4 py-2 text-sm">{log.type || "N/A"}</td>
                     <td className="px-4 py-2 text-sm">
                       {formatDate(log.createdAt)}
                     </td>
@@ -414,41 +439,13 @@ const CallLogs = () => {
                         </span>
                       )}
                     </td>
-
-                    {/* <td className="px-4 py-2 text-sm">
-                      <span
-                        className={`px-2 py-1 rounded ${badgeClass(
-                          log.analysis?.successEvaluation
-                        )}`}
-                      >
-                        {log.analysis?.successEvaluation === "true" ? (
-                          "Agreed for Donation "
-                        ) : log.analysis?.successEvaluation === "false" ? (
-                          "Not Agreed for Donation"
-                        ) : (
-                          <span className="px-2 py-1 ">Not Applicable</span>
-                        )}
-                      </span>
-                    </td> */}
-                    <td className="px-4 py-2 text-sm space-x-2">
+                    <td className="px-4 py-2 text-sm">
                       <Link
                         to={`/call-details/${log.id}`}
                         className="text-blue-600 hover:underline"
                       >
                         View Details
                       </Link>
-                      {/* {log.recordingUrl ? (
-                        <a
-                          href={log.recordingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-green-600 hover:underline"
-                        >
-                          Play Recording
-                        </a>
-                      ) : (
-                        <span className="text-gray-500">No Recording</span>
-                      )} */}
                     </td>
                   </tr>
                 ))}
