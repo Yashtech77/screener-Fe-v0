@@ -201,7 +201,7 @@ function KnowledgeBaseUpload() {
   const [assistantId, setAssistantId] = useState('');
 
   // Read from .env
-  const BASE_URL = import.meta.env.VITE_VAPI_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
