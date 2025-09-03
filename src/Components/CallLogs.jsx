@@ -253,6 +253,235 @@
 // ---------------------------------------------------------------telebot-frontend---------------------------------------------------------
 
 
+// import React, { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
+// import BackButton from "../section/Backbutton";
+
+// const CallLogs = () => {
+//   const [callLogs, setCallLogs] = useState([]);
+//   const [filteredLogs, setFilteredLogs] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filter, setFilter] = useState("all");
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const logsPerPage = 10;
+
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   // 🔑 Load from .env
+//   const API_KEY = import.meta.env.VITE_VAPI_API_KEY;
+//   const BASE_URL = import.meta.env.VITE_VAPI_BASE_URL;
+
+//   const fetchCallLogs = async () => {
+//     setLoading(true);
+//     setError(null);
+//     try {
+//       const response = await fetch(`${BASE_URL}/call`, {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${API_KEY}`,
+//         },
+//       });
+//       if (!response.ok) throw new Error("Failed to fetch call logs");
+
+//       const data = await response.json();
+
+//       // 🔹 Fetch details for each call to get createdAt
+//       const withDetails = await Promise.all(
+//         data.map(async (log) => {
+//           try {
+//             const res = await fetch(`${BASE_URL}/call/${log.id}`, {
+//               headers: { Authorization: `Bearer ${API_KEY}` },
+//             });
+//             if (res.ok) {
+//               const detail = await res.json();
+//               return { ...log, createdAt: detail.createdAt || log.startedAt };
+//             }
+//             return { ...log, createdAt: log.startedAt };
+//           } catch {
+//             return { ...log, createdAt: log.startedAt };
+//           }
+//         })
+//       );
+
+//       setCallLogs(withDetails);
+//       setFilteredLogs(withDetails);
+//     } catch (err) {
+//       setError(err.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchCallLogs();
+//   }, []);
+
+//   useEffect(() => {
+//     applyFilters();
+//   }, [searchTerm, filter, callLogs]);
+
+//   const applyFilters = () => {
+//     let logs = [...callLogs];
+
+//     if (searchTerm.trim() !== "") {
+//       logs = logs.filter(
+//         (log) =>
+//           log.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//           log.type?.toLowerCase().includes(searchTerm.toLowerCase())
+//       );
+//     }
+
+//     const today = new Date();
+//     logs = logs.filter((log) => {
+//       const date = new Date(log.createdAt || log.startedAt);
+//       if (filter === "today") {
+//         return date.toDateString() === today.toDateString();
+//       } else if (filter === "yesterday") {
+//         const yesterday = new Date(today);
+//         yesterday.setDate(today.getDate() - 1);
+//         return date.toDateString() === yesterday.toDateString();
+//       } else if (filter === "week") {
+//         const weekAgo = new Date(today);
+//         weekAgo.setDate(today.getDate() - 7);
+//         return date >= weekAgo;
+//       } else if (filter === "month") {
+//         return (
+//           date.getMonth() === today.getMonth() &&
+//           date.getFullYear() === today.getFullYear()
+//         );
+//       }
+//       return true;
+//     });
+
+//     setFilteredLogs(logs);
+//     setCurrentPage(1);
+//   };
+
+//   const formatDate = (date) =>
+//     date ? new Date(date).toLocaleString() : "N/A";
+
+//   const totalPages =
+//     filteredLogs.length > 0
+//       ? Math.ceil(filteredLogs.length / logsPerPage)
+//       : 1;
+
+//   const startIndex = (currentPage - 1) * logsPerPage;
+//   const currentLogs = filteredLogs.slice(
+//     startIndex,
+//     startIndex + logsPerPage
+//   );
+
+//   const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+//   const handleNext = () =>
+//     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 p-6">
+//       <BackButton />
+//       <h2 className="text-3xl font-semibold mb-4">Call Logs</h2>
+
+//       {error && <p className="text-red-600">{error}</p>}
+
+//       <div className="mb-4 flex flex-wrap gap-4 items-center">
+//         <input
+//           type="text"
+//           placeholder="Search by Call ID or Type..."
+//           value={searchTerm}
+//           onChange={(e) => setSearchTerm(e.target.value)}
+//           className="border border-gray-300 px-3 py-2 rounded w-full md:w-1/3"
+//         />
+
+//         <select
+//           value={filter}
+//           onChange={(e) => setFilter(e.target.value)}
+//           className="border border-gray-300 px-3 py-2 rounded"
+//         >
+//           <option value="all">All Dates</option>
+//           <option value="today">Today</option>
+//           <option value="yesterday">Yesterday</option>
+//           <option value="week">This Week</option>
+//           <option value="month">This Month</option>
+//         </select>
+//       </div>
+
+//       {loading ? (
+//         <p>Loading...</p>
+//       ) : filteredLogs.length === 0 ? (
+//         <p className="text-gray-600">No call logs found.</p>
+//       ) : (
+//         <>
+//           <div className="overflow-x-auto bg-white shadow rounded-lg">
+//             <table className="min-w-full table-auto">
+//               <thead className="bg-gray-100">
+//                 <tr>
+//                   <th className="px-4 py-2 text-left">Call ID</th>
+//                   <th className="px-4 py-2">Type</th>
+//                   <th className="px-4 py-2">Created At</th>
+//                   <th className="px-4 py-2">Ended At</th>
+//                   <th className="px-4 py-2">Actions</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {currentLogs.map((log) => (
+//                   <tr key={log.id} className="border-b hover:bg-gray-50">
+//                     <td className="px-4 py-2 text-sm">{log.id}</td>
+//                     <td className="px-4 py-2 text-sm">{log.type || "N/A"}</td>
+//                     <td className="px-4 py-2 text-sm">
+//                       {formatDate(log.createdAt)}
+//                     </td>
+//                     <td className="px-4 py-2 text-sm">
+//                       {log.endedAt ? (
+//                         formatDate(log.endedAt)
+//                       ) : (
+//                         <span className="px-2 py-1 border border-yellow-400 text-yellow-600 rounded">
+//                           Customer didn’t pick the call
+//                         </span>
+//                       )}
+//                     </td>
+//                     <td className="px-4 py-2 text-sm">
+//                       <Link
+//                         to={`/call-details/${log.id}`}
+//                         className="text-blue-600 hover:underline"
+//                       >
+//                         View Details
+//                       </Link>
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           </div>
+
+//           <div className="mt-4 flex justify-between items-center">
+//             <button
+//               onClick={handlePrev}
+//               disabled={currentPage === 1}
+//               className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50"
+//             >
+//               Prev
+//             </button>
+//             <span className="text-gray-600">
+//               Page {currentPage} of {totalPages}
+//             </span>
+//             <button
+//               onClick={handleNext}
+//               disabled={currentPage === totalPages}
+//               className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50"
+//             >
+//               Next
+//             </button>
+//           </div>
+//         </>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default CallLogs;
+// -----------------------------------------------------------------------------------------------------------------------------------------
+
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BackButton from "../section/Backbutton";
@@ -268,41 +497,23 @@ const CallLogs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔑 Load from .env
-  const API_KEY = import.meta.env.VITE_VAPI_API_KEY;
-  const BASE_URL = import.meta.env.VITE_VAPI_BASE_URL;
+  // ✅ Flask backend base URL from .env
+  const BACKEND_URL = import.meta.env.VITE_API_BASE_URL ;
 
   const fetchCallLogs = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${BASE_URL}/call`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-        },
-      });
+      const response = await fetch(`${BACKEND_URL}/get-call-logs`);
       if (!response.ok) throw new Error("Failed to fetch call logs");
 
       const data = await response.json();
 
-      // 🔹 Fetch details for each call to get createdAt
-      const withDetails = await Promise.all(
-        data.map(async (log) => {
-          try {
-            const res = await fetch(`${BASE_URL}/call/${log.id}`, {
-              headers: { Authorization: `Bearer ${API_KEY}` },
-            });
-            if (res.ok) {
-              const detail = await res.json();
-              return { ...log, createdAt: detail.createdAt || log.startedAt };
-            }
-            return { ...log, createdAt: log.startedAt };
-          } catch {
-            return { ...log, createdAt: log.startedAt };
-          }
-        })
-      );
+      // Add createdAt fallback
+      const withDetails = data.map((log) => ({
+        ...log,
+        createdAt: log.createdAt || log.startedAt,
+      }));
 
       setCallLogs(withDetails);
       setFilteredLogs(withDetails);

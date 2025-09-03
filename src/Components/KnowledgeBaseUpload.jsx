@@ -97,7 +97,7 @@ function KnowledgeBaseUpload() {
     <div className="p-4 border rounded shadow bg-white max-w-xl mx-auto mt-10 space-y-8">
       <h1 className="text-2xl font-bold mb-4">Knowledge Base Upload & Assistant Creation</h1>
 <div>
-  <a href="/assistant_creation_guide.pdf" target="_blank" rel="noopener noreferrer">📃
+  <a href="/Assistant_Guide_Steps.pdf" target="_blank" rel="noopener noreferrer">📃
     <span className="underline text hover:text-blue-900 font-bold">Assistant Creation Guide</span>
   </a>
 </div>
