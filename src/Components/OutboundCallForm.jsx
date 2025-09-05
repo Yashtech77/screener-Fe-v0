@@ -430,7 +430,7 @@ const OutboundCallForm = () => {
             <h2 className="text-3xl font-bold text-center text-purple-700 mb-2">
               Outbound Call
             </h2>
-            <p className="text-center text-sm text-gray-500 mb-6">{assistStatus}</p>
+            {/* <p className="text-center text-sm text-gray-500 mb-6">{assistStatus}</p> */}
 
             <label className="block text-gray-700 text-lg font-medium mb-2">
               Phone Number (E.164)
@@ -464,7 +464,7 @@ const OutboundCallForm = () => {
             <h2 className="text-3xl font-bold text-center text-indigo-700 mb-2">
               Batch Calling
             </h2>
-            <p className="text-center text-sm text-gray-500 mb-6">{assistStatus}</p>
+            {/* <p className="text-center text-sm text-gray-500 mb-6">{assistStatus}</p> */}
 
             <label className="block text-gray-700 text-lg font-medium mb-2">
               Call Purpose

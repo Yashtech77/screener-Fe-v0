@@ -55,19 +55,19 @@ const Home = () => {
             >
               Call Logs
             </Link>
-            <Link
+            {/* <Link
               to="/knowledge-base-upload"
               className="bg-[#7B3AED] text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-[#6C2AD9] transition-all duration-300"
             >
               Create Assistant
-            </Link>
-                 <Link
+            </Link> */}
+                 {/* <Link
               to="/manage-assist"
               className="bg-[#7B3AED] text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-[#6C2AD9] transition-all duration-300"
             >
               Manage Assistant
             </Link>
-         
+          */}
           </div>
         </div>
       </div>
