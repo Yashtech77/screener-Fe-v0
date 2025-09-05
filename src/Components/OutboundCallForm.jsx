@@ -295,26 +295,46 @@ const OutboundCallForm = () => {
   const [batchStatus, setBatchStatus] = useState("");
 
   // ===== Auto-select assistant (like inbound) =====
-  useEffect(() => {
-    const fetchAssistantId = async () => {
-      try {
-        const { data } = await axios.get(`${API_BASE}/list-assistants`);
-        if (Array.isArray(data) && data.length > 0) {
-          setAssistantId(data[0].id);
-          setAssistStatus(`Using assistant: ${data[0].name || data[0].id}`);
-        } else {
-          setAssistantId(defaultAssistantId);
-          setAssistStatus("Using default assistant from .env");
-        }
-      } catch (err) {
-        console.error("Error fetching assistants:", err);
-        setAssistantId(defaultAssistantId);
-        setAssistStatus("Failed to fetch — using default from .env");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchAssistantId = async () => {
+  //     try {
+  //       const { data } = await axios.get(`${API_BASE}/list-assistants`);
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         setAssistantId(data[0].id);
+  //         setAssistStatus(`Using assistant: ${data[0].name || data[0].id}`);
+  //       } else {
+  //         setAssistantId(defaultAssistantId);
+  //         setAssistStatus("Using default assistant from .env");
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching assistants:", err);
+  //       setAssistantId(defaultAssistantId);
+  //       setAssistStatus("Failed to fetch — using default from .env");
+  //     }
+  //   };
 
-    fetchAssistantId();
-  }, [defaultAssistantId]);
+  //   fetchAssistantId();
+  // }, [defaultAssistantId]);
+useEffect(() => {
+  const fetchAssistantId = async () => {
+    try {
+      const { data } = await axios.get(`${API_BASE}/list-assistants`);
+      if (data?.id) {
+        setAssistantId(data.id);
+        setAssistStatus(`Using assistant: ${data.name || data.id}`);
+      } else {
+        setAssistantId(defaultAssistantId);
+        setAssistStatus("Using default assistant from .env");
+      }
+    } catch (err) {
+      console.error("Error fetching assistants:", err);
+      setAssistantId(defaultAssistantId);
+      setAssistStatus("Failed to fetch — using default from .env");
+    }
+  };
+
+  fetchAssistantId();
+}, [defaultAssistantId]);
 
   // ===== Single outbound call =====
   const handleInitiateCall = async () => {
