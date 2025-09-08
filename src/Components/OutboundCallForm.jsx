@@ -341,7 +341,7 @@ useEffect(() => {
     setStatus("");
 
     if (!E164_REGEX.test(phoneNumber)) {
-      setStatus("Invalid phone number. Use E.164 format like +15551234567");
+      setStatus("Invalid phone number. Use E.164 format like +91874653...");
       return;
     }
 
@@ -453,7 +453,7 @@ useEffect(() => {
             {/* <p className="text-center text-sm text-gray-500 mb-6">{assistStatus}</p> */}
 
             <label className="block text-gray-700 text-lg font-medium mb-2">
-              Phone Number (E.164)
+              Phone Number (E.+918974653...)
             </label>
             <input
               type="text"
