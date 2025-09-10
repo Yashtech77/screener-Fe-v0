@@ -360,8 +360,18 @@ useEffect(() => {
           : data?.message || "Failed to initiate call"
       );
     } catch (error) {
-      setStatus(`Error: ${error?.response?.data?.message || error.message}`);
-    }
+  let message = "Something went wrong. Please try again later.";
+
+  if (error.response?.status === 401) {
+    message = "Unauthorized: Please check your credentials.";
+  } else if (error.response?.status === 404) {
+    message = "Not found: The requested resource doesn’t exist.";
+  } else if (error.response?.status === 500) {
+    message = "Server error: Please try again after some time.";
+  }
+
+  setStatus(message);
+}
   };
 
   // ===== CSV parsing for campaign =====
