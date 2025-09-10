@@ -43,12 +43,12 @@ const Home = () => {
             >
               Outbound Call
             </Link>
-            <Link
+            {/* <Link
               to="/inbound-call"
               className="bg-[#7B3AED] text-white font-semibold px-6 py-3 w-40 rounded-lg shadow-lg hover:bg-[#6C2AD9] transition-all duration-300"
             >
               Inbound Call
-            </Link>
+            </Link> */}
             <Link
               to="/call-logs"
               className="bg-[#7B3AED] text-white text-center font-semibold px-6 py-3 w-40 rounded-lg shadow-lg hover:bg-[#6C2AD9] transition-all duration-300"
