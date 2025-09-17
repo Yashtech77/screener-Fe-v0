@@ -20,9 +20,10 @@ const AssistantManager = () => {
       const response = await axios.get(`${API_BASE}/list-assistants`);
       setAssistants(response.data);
       setError('');
-    } catch (err) {
-      console.error(err);
-      setError('Failed to load assistants');
+    } catch {
+      // Masked error (no Vapi details exposed)
+      setError('Failed to load assistants. Please try again later.');
+      toast.error('Could not fetch assistants.');
     } finally {
       setLoading(false);
     }
@@ -38,11 +39,11 @@ const AssistantManager = () => {
 
     try {
       await axios.delete(`${API_BASE}/delete-assistant/${id}`);
-      toast.success('Assistant deleted');
+      toast.success('Assistant deleted successfully');
       fetchAssistants(); // Refresh list
-    } catch (err) {
-      console.error(err);
-      toast.error('Failed to delete assistant');
+    } catch {
+      // Masked error
+      toast.error('Failed to delete assistant. Please try again.');
     }
   };
 
@@ -54,7 +55,7 @@ const AssistantManager = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-         <BackButton />
+      <BackButton />
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-xl p-6">
         <h1 className="text-2xl font-bold text-purple-700 mb-4">Manage Assistants</h1>
 
