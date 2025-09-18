@@ -79,7 +79,7 @@ const Home = () => {
           href="mailto:techjartechnologies@gmail.com"
           className="text-[#7B3AED] hover:underline"
         >
-          Contact Support
+          Contact support
         </a>
       </footer>
     </motion.div>
