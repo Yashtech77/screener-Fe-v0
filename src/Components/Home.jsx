@@ -37,9 +37,7 @@ const Home = () => {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-10 justify-center md:justify-start">
-            {/* <span className="text-red-600 font-semibold text-xl">Access restricted. To continue this service, reach out to the admin: Pritish@techjar.in
-, info@techjar.in
-.</span> */}
+         
             <Link
               to="/outbound-call"
               className="bg-[#7B3AED] text-white font-semibold px-6 py-3 w-40 rounded-lg shadow-lg hover:bg-[#6C2AD9] transition-all duration-300"
