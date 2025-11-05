@@ -32,8 +32,8 @@ const Home = () => {
           </h2>
           <p className="text-gray-600 text-lg leading-relaxed">
             Use TeleBot to enhance your voice interactions with
-            powerful automation tools. From outbound calling to smart replies,
-            streamline every step of your communication journey.
+            powerful automation tools. From outbound calling to Smart Replies,
+            streamline every step of your communication Journey.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-10 justify-center md:justify-start">
