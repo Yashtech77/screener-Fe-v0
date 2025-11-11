@@ -391,7 +391,7 @@ const CallLogs = () => {
 
       // Download the file
       XLSX.writeFile(workbook, filename);
-      alert(`Successfully downloaded ${allCallDetails.length} call(s) structured outputs!`);
+      // alert(`Successfully downloaded ${allCallDetails.length} call(s) structured outputs!`);
     } catch (error) {
       console.error("Error downloading Excel:", error);
       alert("Failed to download Excel file");
