@@ -520,10 +520,10 @@ const CallLogs = () => {
       }}></div>
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 p-6">
         <BackButton />
         
-        <div className="container mx-auto px-4 py-16 pt-24">
+        <div className="container mx-auto px-4 py-16 pt-4">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
