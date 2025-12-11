@@ -2,13 +2,32 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Homepage from './Components/Home';
+import OutboundCallForm from './Components/OutboundCallForm';
+import CallLogs from './Components/CallLogs'; 
+import Home from './Components/Home';
+import CallDetails from './Components/CallDetails';
+import InboundCall from './Components/InboundCall';
+import KnowledgeBaseUpload from './Components/KnowledgeBaseUpload';
+import ManageAssist from './Components/ManageAssist';
 
 function App() {
    
 
   return (
     <>
-      <Homepage />
+  
+      <div className="">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/outbound-call" element={<OutboundCallForm />} />
+          <Route path="/call-logs" element={<CallLogs />} />
+          
+          <Route path="/inbound-call" element={<InboundCall />} />
+          <Route path="/call-details/:callId" element={<CallDetails />} />
+          <Route path="/knowledge-base-upload" element={<KnowledgeBaseUpload />} />
+          <Route path="/manage-assist" element={<ManageAssist />} />
+        </Routes>
+      </div>
 
        
     </>

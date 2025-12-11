@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LogoLoop from "./LogoLoop";
 import GradualBlur from "./GradualBlur";
+import { Link } from "react-router-dom";
 import logo from "../assets/logobot.png";
 import CardNav from "./CardNav";
 import FloatingLines from "./FloatingLines";
@@ -216,12 +217,40 @@ const Homepage = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-              <button className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105">
+              <Link
+                to="/outbound-call"
+                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+              >
                 Try Outbond-call
-              </button>
-              <button className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg font-semibold text-white hover:bg-white/10 transition-all">
+              </Link>
+{/* 
+              <Link
+                to="/inbound-call"
+                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+              >
+                Try Web Call
+              </Link> */}
+
+              {/* <Link
+                to="/manage-assist"
+                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+              >
+                Manage assistants
+              </Link> */}
+
+              {/* <Link
+                to="/knowledge-base-upload"
+                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+              >
+                Create assistant
+              </Link> */}
+
+              <Link
+                to="/call-logs"
+                className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg font-semibold text-white hover:bg-white/10 transition-all"
+              >
                 Call logs
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -250,8 +279,6 @@ const Homepage = () => {
                   ariaLabel="Technology partners"
                 />
               </div>
-
-             
             </div>
           </div>
         </section>
