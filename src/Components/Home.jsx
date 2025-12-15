@@ -254,13 +254,13 @@ const Homepage = () => {
             </div>
           </div>
 
-          {/* Technology Partners Section - Integrated at bottom of hero */}
+         
           <div className="w-full pb-8">
             <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-8">
-             Developed  by TechJar Technologies
+             TechJar Technologies
             </p>
 
-            {/* Logo Loop container */}
+            
             <div
               className="relative"
               style={{ height: "100px", overflow: "hidden" }}
