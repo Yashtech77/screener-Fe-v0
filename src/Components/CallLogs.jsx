@@ -737,7 +737,7 @@ const CallLogs = () => {
           </div>
 
           {/* Stats Card */}
-          {!loading && filteredLogs.length > 0 && (
+          {/* {!loading && filteredLogs.length > 0 && (
             <div className="max-w-7xl mx-auto mt-8">
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -779,7 +779,7 @@ const CallLogs = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

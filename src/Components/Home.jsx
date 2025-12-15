@@ -202,9 +202,9 @@ const Homepage = () => {
         <section className="min-h-screen flex flex-col justify-center px-6 pt-20">
           <div className="max-w-4xl mx-auto text-center flex-1 flex flex-col justify-center">
             {/* Heading */}
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
+            <h1 className="text-5xl md:text-6xl font-bold mb-2 text-white">
               Discover TeleBot
-              <span className="block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent text-5xl mt-2 px-2 py-4">
+              <span className="block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent text-5xl mt-2 px-2 py-2">
                 Create smarter conversations
               </span>
             </h1>
@@ -216,7 +216,7 @@ const Homepage = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <Link
                 to="/outbound-call"
                 className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
@@ -257,7 +257,7 @@ const Homepage = () => {
           {/* Technology Partners Section - Integrated at bottom of hero */}
           <div className="w-full pb-8">
             <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-8">
-              TechJar Technologies
+             Developed  by TechJar Technologies
             </p>
 
             {/* Logo Loop container */}

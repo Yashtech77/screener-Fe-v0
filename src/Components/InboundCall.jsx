@@ -55,7 +55,7 @@ export default function InboundCall() {
     });
   };
 
-  const cleanupAndBack = () => {
+  const cleanupAndBack = () => { 
     try { vapiInstanceRef.current?.stop?.(); } catch {}
     vapiInstanceRef.current = null;
     removeVapiWidget();
